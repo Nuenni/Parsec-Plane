@@ -9,6 +9,8 @@ import { Plugin, PluginKey } from "@tiptap/pm/state";
 // plane imports
 import { convertHTMLToMarkdown } from "@plane/utils";
 import type { TCustomComponentsMetaData } from "@plane/utils";
+// helpers
+import { escapeHtmlInPastedMarkdown } from "@/helpers/escape-pasted-html";
 
 type TArgs = {
   editor: Editor;
@@ -21,6 +23,8 @@ export const MarkdownClipboardPlugin = (args: TArgs): Plugin => {
   return new Plugin({
     key: new PluginKey("markdownClipboard"),
     props: {
+      // `plain` is true for shift-paste and pastes into code blocks, where the text is inserted as is
+      transformPastedText: (text, plain) => (plain ? text : escapeHtmlInPastedMarkdown(text)),
       handleDOMEvents: {
         copy: (view, event) => {
           try {
