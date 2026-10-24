@@ -27,6 +27,7 @@ export type TEmailIntakeConfig = {
   signature_html: string;
   state_on_customer_reply: string | null;
   state_on_agent_reply: string | null;
+  ignored_senders: string;
 };
 
 export type TEmailIntakeConfigCreate = {
@@ -47,4 +48,5 @@ export type TEmailIntakeConfigCreate = {
   signature_html?: string;
   state_on_customer_reply?: string | null;
   state_on_agent_reply?: string | null;
+  ignored_senders?: string;
 };

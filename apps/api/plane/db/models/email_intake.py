@@ -53,6 +53,12 @@ class EmailIntakeConfig(ProjectBaseModel):
         "db.State", on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
     )
 
+    # Senders whose mail is never turned into work items, one per line or comma
+    # separated: a full address, or "@example.com" for a whole domain. Meant for our
+    # own systems copying the mailbox, e.g. an app that already opened the work item
+    # through the API and also mails the team about it.
+    ignored_senders = models.TextField(blank=True)
+
     class Meta:
         verbose_name = "Email Intake Config"
         verbose_name_plural = "Email Intake Configs"
