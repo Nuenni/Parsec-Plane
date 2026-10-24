@@ -172,6 +172,38 @@ def _extract_attachments(msg):
     return attachments
 
 
+def _extract_embedded_images(msg):
+    """Images that sit inside the mail text rather than in the attachment list,
+    as a list of dicts. Gmail and Outlook send a pasted screenshot this way: an
+    image part with a Content-ID, referenced from the HTML body. The work item
+    is built from the plain text body, which only keeps a placeholder such as
+    "[image: image.png]", so without this the picture would be lost."""
+    if not msg.is_multipart():
+        return []
+    images = []
+    for part in _walk_outside_attached_messages(msg):
+        if part.is_multipart() or part.get_content_maintype() != "image":
+            continue
+        if part.get_content_disposition() == "attachment":
+            continue
+        content_id = (part.get("Content-ID") or "").strip().strip("<>")
+        if not content_id and part.get_content_disposition() != "inline":
+            continue
+        data = part.get_payload(decode=True) or b""
+        if not data:
+            continue
+        images.append(
+            {
+                "filename": _decode_mime_header(part.get_filename() or "")
+                or f"image-{len(images) + 1}.{part.get_content_subtype()}",
+                "content_type": part.get_content_type(),
+                "data": data,
+                "content_id": content_id,
+            }
+        )
+    return images
+
+
 def _summarize_attached_message(inner):
     """Subject, sender, date and body of an attached message, for the work item text."""
     _name, from_email = parseaddr(_decode_mime_header(inner.get("From", "")))
@@ -185,8 +217,7 @@ def _summarize_attached_message(inner):
 
 def _attached_messages_html(attachments):
     """The attached messages as quoted blocks under the body, oldest first as
-    they arrived. Everything is escaped; the mail body itself is not, and that
-    is a separate matter."""
+    they arrived. Everything is escaped, like the mail body in _text_to_html."""
     blocks = []
     for att in attachments:
         message = att.get("message")
@@ -273,6 +304,7 @@ def parse_email_message(raw_bytes):
         "references": references,
         "body": body,
         "attachments": _extract_attachments(msg),
+        "inline_images": _extract_embedded_images(msg),
         "is_automated": _is_automated_sender(msg, from_email),
     }
 
@@ -293,6 +325,102 @@ def _is_automated_sender(msg, from_email):
         return True
     local_part = (from_email or "").split("@")[0].lower()
     return any(local_part.startswith(marker) for marker in AUTOMATED_LOCAL_PARTS)
+
+
+def _is_ignored_sender(config, from_email):
+    """True when the project lists this sender (or its domain) as one whose mail
+    must not become a work item, see EmailIntakeConfig.ignored_senders."""
+    address = (from_email or "").strip().lower()
+    if not address:
+        return False
+    domain = "@" + address.rsplit("@", 1)[-1]
+    for entry in re.split(r"[\s,;]+", (config.ignored_senders or "").lower()):
+        if entry and (entry == address or (entry.startswith("@") and entry == domain)):
+            return True
+    return False
+
+
+def _text_to_html(text, image_tags=None):
+    """The mail text as HTML paragraphs, with the stored inline images in place.
+
+    Everything the sender wrote is escaped: it is arbitrary text that lands in a
+    page we open ourselves, and support mail regularly quotes markup, e.g. a
+    customer pasting the <script> line they put in their theme. Unescaped, that
+    line was parsed as an element and silently disappeared.
+
+    image_tags maps the placeholders a mail client leaves in the plain text
+    ("[image: name.png]", "[cid:...]") to an <image-component>. Images without a
+    placeholder in the text are appended at the end.
+    """
+    image_tags = image_tags or []
+    tokens = {}
+    for index, (placeholders, tag) in enumerate(image_tags):
+        token = f"\x00img{index}\x00"
+        tokens[token] = tag
+        for placeholder in placeholders:
+            if placeholder and placeholder in text:
+                text = text.replace(placeholder, token)
+    blocks = [block for block in re.split(r"\n\s*\n", (text or "").strip()) if block.strip()]
+    html = "".join(f"<p>{_html.escape(block).replace(chr(10), '<br />')}</p>" for block in blocks)
+    for token, tag in tokens.items():
+        # The image is a block of its own, so the paragraph around it is split.
+        html = html.replace(token, f"</p>{tag}<p>") if token in html else html + tag
+    # Line breaks that now touch a split paragraph edge, and paragraphs left empty.
+    html = re.sub(r"(<br />\s*)+</p>", "</p>", html)
+    html = re.sub(r"<p>(\s*<br />)+", "<p>", html)
+    html = re.sub(r"<p>\s*</p>", "", html)
+    return html or "<p></p>"
+
+
+def _store_inline_images(issue, images, actor, comment=None):
+    """Uploads the embedded images into the object store as editor images of the
+    work item description, or of the comment when one is given. Returns
+    (placeholders, <image-component> tag) pairs for _text_to_html. Images over
+    the size limit are dropped here; the attachment list is where big files go."""
+    from plane.settings.storage import S3Storage
+    from plane.utils.path_validator import sanitize_filename
+
+    if not images:
+        return []
+    storage = S3Storage()
+    tags = []
+    for image in images:
+        size = len(image["data"])
+        if size > settings.FILE_SIZE_LIMIT:
+            continue
+        name = sanitize_filename(image["filename"]) or "image"
+        asset_key = f"{issue.workspace_id}/{uuid.uuid4().hex}-{name}"
+        if not storage.upload_file(io.BytesIO(image["data"]), asset_key, content_type=image["content_type"]):
+            continue
+        asset = FileAsset.objects.create(
+            attributes={"name": name, "type": image["content_type"], "size": size},
+            asset=asset_key,
+            size=size,
+            workspace_id=issue.workspace_id,
+            created_by=actor,
+            issue_id=None if comment else issue.id,
+            comment_id=comment.id if comment else None,
+            project_id=issue.project_id,
+            entity_type=(
+                FileAsset.EntityTypeContext.COMMENT_DESCRIPTION
+                if comment
+                else FileAsset.EntityTypeContext.ISSUE_DESCRIPTION
+            ),
+            entity_identifier=str(comment.id if comment else issue.id),
+            is_uploaded=True,
+        )
+        node_id = str(uuid.uuid4())
+        # Same attributes the editor writes for a fresh upload; width 35% makes it
+        # size the image to the editor on first render.
+        tag = (
+            f'<image-component src="{asset.id}" id="{node_id}" width="35%" height="auto" '
+            f'alignment="left" status="uploaded"></image-component>'
+        )
+        placeholders = [f"[image: {image['filename']}]"]
+        if image["content_id"]:
+            placeholders.append(f"[cid:{image['content_id']}]")
+        tags.append((placeholders, tag))
+    return tags
 
 
 def _send_acknowledgement(config, link, issue, parsed):
@@ -348,6 +476,8 @@ def process_parsed_email(config, parsed):
     """
     if parsed["message_id"] and _message_id_seen(config.project_id, parsed["message_id"]):
         return None
+    if _is_ignored_sender(config, parsed["from_email"]):
+        return None
 
     thread_ids = {mid for mid in ([parsed["in_reply_to"]] + parsed["references"]) if mid}
     bot = _get_intake_bot_user()
@@ -355,6 +485,7 @@ def process_parsed_email(config, parsed):
     existing_link = _find_link_by_message_ids(config.project_id, thread_ids) if thread_ids else None
 
     attachments = parsed.get("attachments") or []
+    inline_images = parsed.get("inline_images") or []
 
     if existing_link is not None:
         extra_html = _attached_messages_html(attachments)
@@ -364,11 +495,16 @@ def process_parsed_email(config, parsed):
             project_id=config.project_id,
             workspace_id=config.workspace_id,
             actor=bot,
-            comment_html=f"<p>{parsed['body']}</p>{extra_html}",
+            comment_html=_text_to_html(parsed["body"]) + extra_html,
             access="EXTERNAL",
             created_by=bot,
             updated_by=bot,
         )
+        # The images belong to the comment, so they can only be stored once it exists.
+        image_tags = _store_inline_images(existing_link.issue, inline_images, bot, comment=comment)
+        if image_tags:
+            comment.comment_html = _text_to_html(parsed["body"], image_tags) + extra_html
+            comment.save(update_fields=["comment_html"])
         issue_activity.delay(
             type="comment.activity.created",
             requested_data=json.dumps(IssueCommentSerializer(comment).data, cls=DjangoJSONEncoder),
@@ -402,9 +538,10 @@ def process_parsed_email(config, parsed):
             default=False,
         )
 
+    attached_html = _attached_messages_html(attachments)
     issue = Issue.objects.create(
         name=(parsed["subject"] or "New support request")[:255],
-        description_html=f"<p>{parsed['body']}</p>{_attached_messages_html(attachments)}",
+        description_html=_text_to_html(parsed["body"]) + attached_html,
         project_id=config.project_id,
         workspace_id=config.workspace_id,
         state_id=triage_state.id,
@@ -412,8 +549,9 @@ def process_parsed_email(config, parsed):
         updated_by=bot,
     )
     skipped_html = _store_attachments(issue, attachments, bot)
-    if skipped_html:
-        issue.description_html += skipped_html
+    image_tags = _store_inline_images(issue, inline_images, bot)
+    if skipped_html or image_tags:
+        issue.description_html = _text_to_html(parsed["body"], image_tags) + attached_html + skipped_html
         issue.save(update_fields=["description_html"])
     IntakeIssue.objects.create(
         intake_id=intake.id,

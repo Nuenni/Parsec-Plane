@@ -43,6 +43,7 @@ const emptyForm: TEmailIntakeConfigCreate = {
   signature_html: "",
   state_on_customer_reply: null,
   state_on_agent_reply: null,
+  ignored_senders: "",
 };
 
 export function EmailIntakeConfigForm(props: Props) {
@@ -70,6 +71,7 @@ export function EmailIntakeConfigForm(props: Props) {
           signature_html: initialValue.signature_html,
           state_on_customer_reply: initialValue.state_on_customer_reply,
           state_on_agent_reply: initialValue.state_on_agent_reply,
+          ignored_senders: initialValue.ignored_senders,
         }
       : emptyForm
   );
@@ -265,6 +267,23 @@ export function EmailIntakeConfigForm(props: Props) {
             className="px-3 py-2"
           />
         </div>
+      </div>
+
+      <div className="border-t border-subtle pt-3">
+        <h6 className="mb-2 text-13 font-medium">Ignored senders</h6>
+        <p className="mb-2 text-11 text-tertiary">
+          Mail from these senders never becomes a work item. One per line or comma separated: a full address, or{" "}
+          <code className="text-tertiary">@example.com</code> for a whole domain. Useful when one of your own systems
+          already opened the work item and also mails this inbox about it.
+        </p>
+        <textarea
+          id="email-intake-ignored-senders"
+          value={form.ignored_senders ?? ""}
+          onChange={(event) => update("ignored_senders", event.target.value)}
+          placeholder="notifications@example.com"
+          rows={3}
+          className="font-mono w-full rounded-md border-[0.5px] border-subtle-1 bg-layer-2 p-2 text-11 focus:outline-none"
+        />
       </div>
 
       <div className="border-t border-subtle pt-3">

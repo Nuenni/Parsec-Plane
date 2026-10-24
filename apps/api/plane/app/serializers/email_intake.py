@@ -53,6 +53,7 @@ class EmailIntakeConfigSerializer(BaseSerializer):
             "signature_html",
             "state_on_customer_reply",
             "state_on_agent_reply",
+            "ignored_senders",
         ]
         read_only_fields = ["id", "project", "last_polled_at", "created_at"]
 
