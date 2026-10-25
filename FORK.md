@@ -73,13 +73,21 @@ privacy policy and the Hetzner data-processing agreement.
 
 ## Deployment notes
 
-`web` and `admin` are served by the nginx config under
-`apps/*/nginx/nginx.conf`. Both now set `absolute_redirect off;` and
-`port_in_redirect off;` - behind Traefik terminating TLS, nginx's own
-directory-redirect (`/some-path` -> `/some-path/`) otherwise builds an
-absolute `Location` from its own `$scheme`/listen port, leaking an internal
-`http://host:3000/...` URL to clients instead of a relative path. Both
-files were a 0-diff match against upstream before this change.
+`web` and `admin` are served by Caddy since the October 2026 upstream merge
+(upstream's #9716 replaced nginx; config in `apps/*/caddy/Caddyfile`). The
+old nginx fix (`absolute_redirect off`) is no longer needed: checked on
+25.10.2026 with Traefik's headers, Caddy answers directory redirects with a
+relative `Location` (`/spaces/`).
+
+The Caddyfiles of `web` and `admin` rate-limit static asset requests per
+client IP. Upstream allows 300 per minute; Parsec sets **3000**. One cold
+load of the web app fetches about 315 hashed chunks (measured 25.10.2026),
+so with 300 the tail of the very first page load got `429` and the route
+loader kept reloading the page. Every deploy renames the chunks, so every
+user starts cold after a deploy. Keep this on future upstream merges.
+Client IPs are resolved correctly in production: Caddy trusts private
+ranges (Traefik on the Docker network) and pm.payglue.io is not behind the
+Cloudflare proxy, so `X-Forwarded-For` carries the real visitor.
 
 `EMAIL_FROM` **must** be configured (Admin -> Email settings, or the
 `EMAIL_FROM` env var) - upstream's own fallback if it's never set is
@@ -92,12 +100,9 @@ harder thing to debug. Verified live: our instance has it set correctly
 through the same `get_email_configuration()` function, so one DB row
 covers all of them.
 
-`space` does **not** use nginx in production - its Docker image runs
-`react-router-serve` directly (see `Dockerfile.space`'s final stage).
-`apps/space/nginx/nginx.conf` still exists in the repo (unmodified from
-upstream) but isn't part of the deployed image; don't assume a change there
-takes effect. This matters for any future nginx change too: it only ever
-needs to touch `web` and `admin`.
+`space` runs `react-router-serve` directly (see `Dockerfile.space`'s final
+stage), without Caddy or nginx. `apps/space/nginx/nginx.conf` still exists
+in the repo (unmodified from upstream) but isn't part of the deployed image.
 
 ## CI guard against Plane-infrastructure references
 
