@@ -152,7 +152,7 @@ export function IssueCommentToolbar(props: Props) {
                     : "text-label-indigo-text";
 
                 return (
-                  <Tooltip key={access.key} tooltipContent={access.label}>
+                  <Tooltip key={access.key} label={access.label}>
                     <button
                       type="button"
                       onClick={() => handleAccessChange?.(access.key)}
@@ -180,9 +180,7 @@ export function IssueCommentToolbar(props: Props) {
               onClick={handleSubmit}
               disabled={isSubmitButtonDisabled}
               loading={isSubmitting}
-            >
-              {t(submitButtonText)}
-            </Button>
+            />
           )}
         </div>
       </div>

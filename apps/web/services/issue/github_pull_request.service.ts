@@ -26,8 +26,10 @@ export class GithubPullRequestService extends APIService {
   async unlink(workspaceSlug: string, projectId: string, issueId: string, pullRequestId: string): Promise<void> {
     return this.delete(
       `/api/workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/github-prs/${pullRequestId}/`
-    ).catch((error) => {
-      throw error?.response?.data;
-    });
+    )
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
   }
 }

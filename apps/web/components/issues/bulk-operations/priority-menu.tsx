@@ -6,12 +6,12 @@
  * Fork-specific addition, absent from the upstream project this was forked from.
  */
 
+import { PriorityIcon } from "@plane/blocks/icons";
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { ISSUE_PRIORITIES } from "@plane/constants";
-import { PriorityIcon } from "@plane/propel/icons";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import type { TIssuePriorities } from "@plane/types";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
@@ -46,7 +46,7 @@ export const BulkOperationsPriorityMenu = observer(function BulkOperationsPriori
       );
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "The priority could not be updated for one or more work items. Please try again.",
       });

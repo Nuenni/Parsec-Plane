@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+import { PagesOutline } from "@makeplane/propel/icons";
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Plus } from "lucide-react";
@@ -11,7 +12,6 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 // plane imports
 import { useTranslation } from "@plane/i18n";
-import { PageIcon } from "@plane/propel/icons";
 import { getPageName } from "@plane/utils";
 // hooks
 import { EPageStoreType, usePageStore } from "@/hooks/store";
@@ -75,7 +75,7 @@ export const PageNavigationPaneInfoTabSubPagesInfo = observer(function PageNavig
                 className="flex items-center gap-1.5 text-13 font-medium text-secondary hover:text-primary"
                 style={{ paddingLeft: `${index * 12}px` }}
               >
-                <PageIcon className="size-3.5 flex-shrink-0 text-tertiary" />
+                <PagesOutline className="size-3.5 flex-shrink-0 text-tertiary" />
                 <span className="truncate">{getPageName(ancestor.name)}</span>
               </Link>
             ))}
@@ -110,7 +110,7 @@ export const PageNavigationPaneInfoTabSubPagesInfo = observer(function PageNavig
                 href={childPage.getRedirectionLink()}
                 className="flex items-center gap-1.5 text-13 font-medium text-secondary hover:text-primary"
               >
-                <PageIcon className="size-3.5 flex-shrink-0 text-tertiary" />
+                <PagesOutline className="size-3.5 flex-shrink-0 text-tertiary" />
                 <span className="truncate">{getPageName(childPage.name)}</span>
               </Link>
             );

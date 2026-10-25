@@ -106,7 +106,7 @@ export const PageDetailsHeader = observer(function PageDetailsHeader() {
                   <BreadcrumbLink
                     label={getPageName(ancestor.name)}
                     href={`/${workspaceSlug}/projects/${projectId}/pages/${ancestor.id}/`}
-                    icon={<PageIcon className="h-4 w-4 text-tertiary" />}
+                    icon={<PagesOutline className="h-4 w-4 text-tertiary" />}
                   />
                 }
               />

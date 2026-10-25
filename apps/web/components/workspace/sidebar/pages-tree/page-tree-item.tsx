@@ -4,14 +4,14 @@
  * See the LICENSE file for details.
  */
 
+import { ChevronRightOutline, PagesOutline } from "@makeplane/propel/icons";
+import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 // plane imports
-import { ChevronRightIcon, PageIcon } from "@plane/propel/icons";
-import { Tooltip } from "@plane/propel/tooltip";
 import { getPageName, cn } from "@plane/utils";
 // hooks
 import { EPageStoreType, usePageStore } from "@/hooks/store";
@@ -70,16 +70,16 @@ export const PageTreeItem = observer(function PageTreeItem(props: TPageTreeItemP
               invisible: !hasChildren,
             })}
           >
-            <ChevronRightIcon
+            <ChevronRightOutline
               className={cn("size-3 flex-shrink-0 text-placeholder transition-transform", { "rotate-90": isOpen })}
             />
           </button>
           <Link href={redirectionLink} className="flex min-w-0 flex-1 items-center gap-1.5 py-0.5">
-            <PageIcon className="size-3.5 flex-shrink-0 text-tertiary" />
+            <PagesOutline className="size-3.5 flex-shrink-0 text-tertiary" />
             <span className="truncate text-11 font-medium">{getPageName(page.name)}</span>
           </Link>
         </div>
-        <Tooltip tooltipContent="Add sub-page" position="top">
+        <Tooltip label="Add sub-page" side="top">
           <button
             type="button"
             onClick={handleAddSubPage}

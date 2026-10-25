@@ -45,11 +45,11 @@ export class EmailIntakeConfigService extends APIService {
   }
 
   async destroy(workspaceSlug: string, projectId: string, configId: string): Promise<void> {
-    return this.delete(
-      `/api/workspaces/${workspaceSlug}/projects/${projectId}/email-intake-configs/${configId}/`
-    ).catch((error) => {
-      throw error?.response?.data;
-    });
+    return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/email-intake-configs/${configId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
   }
 
   async listImapFolders(

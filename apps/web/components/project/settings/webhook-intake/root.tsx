@@ -4,14 +4,15 @@
  * See the LICENSE file for details.
  */
 
+import { Button } from "@makeplane/propel/components/button";
+import { Tooltip } from "@makeplane/propel/components/tooltip";
+import { Loader } from "@plane/blocks/skeleton";
+import { Switch } from "@makeplane/propel/components/switch";
 import { CopyIcon, RefreshCw, Trash2 } from "lucide-react";
 import useSWR from "swr";
 // plane imports
 import { API_BASE_URL } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Tooltip } from "@plane/propel/tooltip";
-import { Loader, ToggleSwitch } from "@plane/ui";
+import { setToast } from "@plane/blocks/toast";
 import { copyTextToClipboard } from "@plane/utils";
 // services
 import { WebhookIntakeConfigService } from "@/services/project/webhook-intake-config.service";
@@ -42,7 +43,7 @@ export function WebhookIntakeSettingsRoot(props: Props) {
       await webhookIntakeConfigService.create(workspaceSlug, projectId, "USERBACK");
       mutate();
     } catch (error) {
-      setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: extractErrorMessage(error) });
+      setToast({ type: "error", title: "Error", message: extractErrorMessage(error) });
     }
   };
 
@@ -51,7 +52,7 @@ export function WebhookIntakeSettingsRoot(props: Props) {
       await webhookIntakeConfigService.update(workspaceSlug, projectId, configId, { is_active });
       mutate();
     } catch (error) {
-      setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: extractErrorMessage(error) });
+      setToast({ type: "error", title: "Error", message: extractErrorMessage(error) });
     }
   };
 
@@ -60,12 +61,12 @@ export function WebhookIntakeSettingsRoot(props: Props) {
       await webhookIntakeConfigService.rotateToken(workspaceSlug, projectId, configId);
       mutate();
       setToast({
-        type: TOAST_TYPE.SUCCESS,
+        type: "success",
         title: "Token rotated",
         message: "The old webhook URL stopped working - update Userback with the new one below.",
       });
     } catch (error) {
-      setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: extractErrorMessage(error) });
+      setToast({ type: "error", title: "Error", message: extractErrorMessage(error) });
     }
   };
 
@@ -74,14 +75,14 @@ export function WebhookIntakeSettingsRoot(props: Props) {
       await webhookIntakeConfigService.destroy(workspaceSlug, projectId, configId);
       mutate();
     } catch (error) {
-      setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: extractErrorMessage(error) });
+      setToast({ type: "error", title: "Error", message: extractErrorMessage(error) });
     }
   };
 
   const handleCopy = (url: string) => {
     copyTextToClipboard(url)
-      .then(() => setToast({ type: TOAST_TYPE.SUCCESS, title: "Copied", message: "Webhook URL copied to clipboard." }))
-      .catch(() => setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: "Could not copy the URL." }));
+      .then(() => setToast({ type: "success", title: "Copied", message: "Webhook URL copied to clipboard." }))
+      .catch(() => setToast({ type: "error", title: "Error", message: "Could not copy the URL." }));
   };
 
   if (!configs) {
@@ -111,12 +112,13 @@ export function WebhookIntakeSettingsRoot(props: Props) {
           {userbackConfig && (
             <div className="flex items-center gap-3">
               <span className="text-11 text-tertiary">Active</span>
-              <ToggleSwitch
-                value={userbackConfig.is_active}
-                onChange={(value) => handleToggleActive(userbackConfig.id, value)}
+              <Switch
+                size="sm"
+                checked={userbackConfig.is_active}
+                onCheckedChange={(value) => handleToggleActive(userbackConfig.id, value)}
               />
               {isAdmin && (
-                <Tooltip tooltipContent="Disconnect Userback">
+                <Tooltip label="Disconnect Userback">
                   <button
                     type="button"
                     onClick={() => handleDelete(userbackConfig.id)}
@@ -136,9 +138,9 @@ export function WebhookIntakeSettingsRoot(props: Props) {
         </p>
 
         {!userbackConfig && isAdmin && (
-          <Button variant="secondary" onClick={handleEnable} className="w-fit">
-            Get webhook URL
-          </Button>
+          <div className="w-fit">
+            <Button variant="secondary" size="md" stretch="auto" label="Get webhook URL" onClick={handleEnable} />
+          </div>
         )}
 
         {webhookUrl && (
@@ -146,13 +148,13 @@ export function WebhookIntakeSettingsRoot(props: Props) {
             <div className="flex h-8 max-w-2xl items-center justify-between gap-2 rounded-sm border border-subtle px-2">
               <p className="truncate text-11 select-all">{webhookUrl}</p>
               <div className="flex shrink-0 items-center gap-2">
-                <Tooltip tooltipContent="Copy webhook URL">
+                <Tooltip label="Copy webhook URL">
                   <button type="button" onClick={() => handleCopy(webhookUrl)} className="grid place-items-center">
                     <CopyIcon className="size-3.5 text-tertiary" />
                   </button>
                 </Tooltip>
                 {isAdmin && (
-                  <Tooltip tooltipContent="Rotate token - invalidates the URL above">
+                  <Tooltip label="Rotate token - invalidates the URL above">
                     <button
                       type="button"
                       onClick={() => handleRotateToken(userbackConfig!.id)}

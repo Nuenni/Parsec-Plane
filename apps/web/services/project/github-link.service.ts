@@ -45,10 +45,10 @@ export class GithubProjectLinkService extends APIService {
   }
 
   async destroy(workspaceSlug: string, projectId: string, linkId: string): Promise<void> {
-    return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/github-links/${linkId}/`).catch(
-      (error) => {
+    return this.delete(`/api/workspaces/${workspaceSlug}/projects/${projectId}/github-links/${linkId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
         throw error?.response?.data;
-      }
-    );
+      });
   }
 }

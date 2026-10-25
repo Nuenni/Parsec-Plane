@@ -4,12 +4,13 @@
  * See the LICENSE file for details.
  */
 
+import { CopyOutline } from "@makeplane/propel/icons";
+import { Switch } from "@makeplane/propel/components/switch";
+import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { useState } from "react";
 import { Eye, EyeOff, Trash2 } from "lucide-react";
-import { CopyIcon } from "@plane/propel/icons";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import type { TGithubProjectLink } from "@plane/types";
-import { ToggleSwitch, Tooltip } from "@plane/ui";
 import { calculateTimeAgo, copyTextToClipboard } from "@plane/utils";
 
 // Consider the connection "healthy" if a webhook delivery was received recently -
@@ -51,7 +52,7 @@ export function GithubProjectLinkItem(props: Props) {
 
   const handleCopy = (value: string, label: string) => {
     copyTextToClipboard(value).then(() =>
-      setToast({ type: TOAST_TYPE.SUCCESS, title: "Copied", message: `${label} copied to clipboard.` })
+      setToast({ type: "success", title: "Copied", message: `${label} copied to clipboard.` })
     );
   };
 
@@ -62,12 +63,12 @@ export function GithubProjectLinkItem(props: Props) {
       <div className="flex items-center justify-between gap-4">
         <h5 className="truncate text-body-sm-medium">{link.repository_full_name}</h5>
         <div className="flex items-center gap-3">
-          <Tooltip tooltipContent={health.label}>
+          <Tooltip label={health.label}>
             <span className={`size-2 flex-shrink-0 rounded-full ${health.color}`} />
           </Tooltip>
           <span className="text-11 text-tertiary">Active</span>
-          <ToggleSwitch value={link.is_active} onChange={onToggleActive} />
-          <Tooltip tooltipContent="Remove this repository link">
+          <Switch size="sm" checked={link.is_active} onCheckedChange={onToggleActive} />
+          <Tooltip label="Remove this repository link">
             <button
               type="button"
               onClick={onDelete}
@@ -87,7 +88,7 @@ export function GithubProjectLinkItem(props: Props) {
             made here sync back.
           </p>
         </div>
-        <ToggleSwitch value={link.sync_issues} onChange={onToggleSyncIssues} />
+        <Switch size="sm" checked={link.sync_issues} onCheckedChange={onToggleSyncIssues} />
       </div>
 
       <div className="flex flex-col gap-1.5 border-t border-subtle pt-3">
@@ -95,7 +96,7 @@ export function GithubProjectLinkItem(props: Props) {
         <div className="flex h-8 items-center justify-between gap-2 rounded-sm border border-subtle-1 bg-layer-1 px-2">
           <p className="truncate text-11">{link.webhook_url}</p>
           <button type="button" className="flex-shrink-0" onClick={() => handleCopy(link.webhook_url, "Webhook URL")}>
-            <CopyIcon className="size-3 text-tertiary" />
+            <CopyOutline className="size-3 text-tertiary" />
           </button>
         </div>
         <p className="text-11 text-tertiary">
@@ -115,7 +116,7 @@ export function GithubProjectLinkItem(props: Props) {
               {showSecret ? <EyeOff className="size-3 text-tertiary" /> : <Eye className="size-3 text-tertiary" />}
             </button>
             <button type="button" onClick={() => handleCopy(link.webhook_secret, "Webhook secret")}>
-              <CopyIcon className="size-3 text-tertiary" />
+              <CopyOutline className="size-3 text-tertiary" />
             </button>
           </div>
         </div>

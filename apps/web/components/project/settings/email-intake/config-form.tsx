@@ -4,12 +4,12 @@
  * See the LICENSE file for details.
  */
 
+import { Button } from "@makeplane/propel/components/button";
+import { Input } from "@makeplane/propel/components/input";
 import { useState } from "react";
 import useSWR from "swr";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import type { TEmailIntakeConfig, TEmailIntakeConfigCreate } from "@plane/types";
-import { Input } from "@plane/ui";
 // services
 import { EmailIntakeConfigService } from "@/services/project/email-intake-config.service";
 import { ProjectStateService } from "@/services/project/project-state.service";
@@ -109,18 +109,18 @@ export function EmailIntakeConfigForm(props: Props) {
       const folders = await emailIntakeConfigService.listImapFolders(workspaceSlug, projectId, {
         id: initialValue?.id,
         imap_host: form.imap_host,
-        imap_port: form.imap_port,
+        imap_port: form.imap_port ?? 993,
         imap_username: form.imap_username,
         imap_password: form.imap_password || undefined,
-        imap_use_ssl: form.imap_use_ssl,
+        imap_use_ssl: form.imap_use_ssl ?? true,
       });
       setAvailableFolders(folders);
       if (folders.length === 0) {
-        setToast({ type: TOAST_TYPE.WARNING, title: "No folders found" });
+        setToast({ type: "warning", title: "No folders found" });
       }
     } catch (error: any) {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Could not list folders",
         message: error?.error ?? "Check the IMAP host/username/password above first.",
       });
@@ -141,7 +141,7 @@ export function EmailIntakeConfigForm(props: Props) {
             value={form.email_address}
             onChange={(event) => update("email_address", event.target.value)}
             placeholder="support@yourdomain.com"
-            className="px-3 py-2"
+            size="md"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -153,7 +153,7 @@ export function EmailIntakeConfigForm(props: Props) {
             value={form.from_name}
             onChange={(event) => update("from_name", event.target.value)}
             placeholder="Support"
-            className="px-3 py-2"
+            size="md"
           />
         </div>
       </div>
@@ -165,27 +165,27 @@ export function EmailIntakeConfigForm(props: Props) {
             value={form.imap_host}
             onChange={(event) => update("imap_host", event.target.value)}
             placeholder="IMAP host"
-            className="px-3 py-2"
+            size="md"
           />
           <Input
             type="number"
             value={form.imap_port}
             onChange={(event) => update("imap_port", Number(event.target.value))}
             placeholder="Port"
-            className="px-3 py-2"
+            size="md"
           />
           <Input
             value={form.imap_username}
             onChange={(event) => update("imap_username", event.target.value)}
             placeholder="Username"
-            className="px-3 py-2"
+            size="md"
           />
           <Input
             type="password"
             value={form.imap_password}
             onChange={(event) => update("imap_password", event.target.value)}
             placeholder={initialValue ? "•••• (leave blank to keep current)" : "Password"}
-            className="px-3 py-2"
+            size="md"
           />
         </div>
         <div className="mt-3 flex flex-col gap-1">
@@ -200,7 +200,7 @@ export function EmailIntakeConfigForm(props: Props) {
                 value={form.imap_folder}
                 onChange={(event) => update("imap_folder", event.target.value)}
               >
-                {!availableFolders.includes(form.imap_folder) && (
+                {form.imap_folder && !availableFolders.includes(form.imap_folder) && (
                   <option value={form.imap_folder}>{form.imap_folder}</option>
                 )}
                 {availableFolders.map((folder) => (
@@ -210,23 +210,25 @@ export function EmailIntakeConfigForm(props: Props) {
                 ))}
               </select>
             ) : (
-              <Input
-                id="email-intake-imap-folder"
-                value={form.imap_folder}
-                onChange={(event) => update("imap_folder", event.target.value)}
-                placeholder="INBOX"
-                className="flex-1 px-3 py-2"
-              />
+              <div className="flex-1">
+                <Input
+                  size="md"
+                  id="email-intake-imap-folder"
+                  value={form.imap_folder}
+                  onChange={(event) => update("imap_folder", event.target.value)}
+                  placeholder="INBOX"
+                />
+              </div>
             )}
             <Button
               variant="secondary"
               size="sm"
+              stretch="auto"
+              label="List folders"
               onClick={handleListFolders}
               loading={isLoadingFolders}
               disabled={!form.imap_host.trim() || !form.imap_username.trim()}
-            >
-              List folders
-            </Button>
+            />
           </div>
           <p className="text-11 text-tertiary">
             Defaults to INBOX. If this mailbox is a shared alias (e.g. a Fastmail alias landing in your personal inbox),
@@ -244,27 +246,27 @@ export function EmailIntakeConfigForm(props: Props) {
             value={form.smtp_host}
             onChange={(event) => update("smtp_host", event.target.value)}
             placeholder="SMTP host"
-            className="px-3 py-2"
+            size="md"
           />
           <Input
             type="number"
             value={form.smtp_port}
             onChange={(event) => update("smtp_port", Number(event.target.value))}
             placeholder="Port"
-            className="px-3 py-2"
+            size="md"
           />
           <Input
             value={form.smtp_username}
             onChange={(event) => update("smtp_username", event.target.value)}
             placeholder="Username"
-            className="px-3 py-2"
+            size="md"
           />
           <Input
             type="password"
             value={form.smtp_password}
             onChange={(event) => update("smtp_password", event.target.value)}
             placeholder={initialValue ? "•••• (leave blank to keep current)" : "Password"}
-            className="px-3 py-2"
+            size="md"
           />
         </div>
       </div>
@@ -362,9 +364,15 @@ export function EmailIntakeConfigForm(props: Props) {
       </div>
 
       <div>
-        <Button onClick={handleSubmit} loading={isSubmitting} disabled={!canSubmit}>
-          {submitLabel}
-        </Button>
+        <Button
+          variant="primary"
+          size="md"
+          stretch="auto"
+          label={submitLabel}
+          onClick={handleSubmit}
+          loading={isSubmitting}
+          disabled={!canSubmit}
+        />
       </div>
     </div>
   );

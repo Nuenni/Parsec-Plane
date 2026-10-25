@@ -4,6 +4,7 @@
  * See the LICENSE file for details.
  */
 
+import { GlobeOutline, LockOutline, ReplyOutline } from "@makeplane/propel/icons";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react";
@@ -14,7 +15,6 @@ import { Tooltip } from "@makeplane/propel/components/tooltip";
 import type { EditorRefApi } from "@plane/editor";
 import { useHashScroll } from "@plane/hooks";
 import { useTranslation } from "@plane/i18n";
-import { CommentReplyIcon, GlobeIcon, LockIcon } from "@plane/propel/icons";
 import { EIssueCommentAccessSpecifier } from "@plane/types";
 import type { TCommentsOperations, TIssueComment } from "@plane/types";
 import { calculateTimeAgo, cn, getFileURL, renderFormattedDate, renderFormattedTime } from "@plane/utils";
@@ -138,10 +138,8 @@ export const CommentCardDisplay = observer(function CommentCardDisplay(props: TC
         </div>
         {showAccessSpecifier && (
           <Tooltip
-            tooltipContent={
-              comment.access === EIssueCommentAccessSpecifier.INTERNAL ? "Internal only" : "Visible externally"
-            }
-            position="top"
+            label={comment.access === EIssueCommentAccessSpecifier.INTERNAL ? "Internal only" : "Visible externally"}
+            side="top"
           >
             <span
               className={cn(
@@ -152,9 +150,9 @@ export const CommentCardDisplay = observer(function CommentCardDisplay(props: TC
               )}
             >
               {comment.access === EIssueCommentAccessSpecifier.INTERNAL ? (
-                <LockIcon className="size-3" />
+                <LockOutline className="size-3" />
               ) : (
-                <GlobeIcon className="size-3" />
+                <GlobeOutline className="size-3" />
               )}
             </span>
           </Tooltip>
@@ -170,7 +168,7 @@ export const CommentCardDisplay = observer(function CommentCardDisplay(props: TC
               placement="bottom-start"
             />
             {enableReplies && (
-              <Tooltip tooltipContent={t("issue.comments.replies.action")} position="top">
+              <Tooltip label={t("issue.comments.replies.action")} side="top">
                 <button
                   type="button"
                   onClick={() => setIsReplying((prev) => !prev)}
@@ -179,7 +177,7 @@ export const CommentCardDisplay = observer(function CommentCardDisplay(props: TC
                     { "bg-layer-1 text-secondary": isReplying }
                   )}
                 >
-                  <CommentReplyIcon width={14} height={14} aria-hidden="true" />
+                  <ReplyOutline width={14} height={14} aria-hidden="true" />
                 </button>
               </Tooltip>
             )}

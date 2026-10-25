@@ -6,16 +6,16 @@
  * Fork-specific addition, absent from the upstream project this was forked from.
  */
 
+import { Button } from "@makeplane/propel/components/button";
+import { Input } from "@makeplane/propel/components/input";
 import { useState } from "react";
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import { getRandomLabelColor } from "@plane/constants";
-import { Button } from "@plane/propel/button";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import type { IIssueLabel } from "@plane/types";
-import { Input } from "@plane/ui";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";
@@ -70,7 +70,7 @@ export const BulkOperationsLabelsMenu = observer(function BulkOperationsLabelsMe
       });
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "The label could not be added for one or more work items. Please try again.",
       });
@@ -89,7 +89,7 @@ export const BulkOperationsLabelsMenu = observer(function BulkOperationsLabelsMe
       await applyLabel(label);
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "The label could not be created. Please try again.",
       });
@@ -111,15 +111,23 @@ export const BulkOperationsLabelsMenu = observer(function BulkOperationsLabelsMe
             handleCreate();
           }}
         >
-          <Input
-            placeholder="Label name"
-            value={newLabelName}
-            onChange={(event) => setNewLabelName(event.target.value)}
-            className="w-full text-13"
+          <div className="w-full">
+            <Input
+              size="md"
+              placeholder="Label name"
+              value={newLabelName}
+              onChange={(event) => setNewLabelName(event.target.value)}
+            />
+          </div>
+          <Button
+            type="submit"
+            variant="secondary"
+            size="sm"
+            stretch="auto"
+            label="Create"
+            loading={isSubmitting}
+            disabled={!newLabelName.trim()}
           />
-          <Button type="submit" variant="secondary" size="sm" loading={isSubmitting} disabled={!newLabelName.trim()}>
-            Create
-          </Button>
         </form>
       )}
       <PowerKLabelsMenu labels={labels ?? []} value={addedLabelIds} onSelect={applyLabel} />

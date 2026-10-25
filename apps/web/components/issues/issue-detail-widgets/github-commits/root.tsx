@@ -4,12 +4,9 @@
  * See the LICENSE file for details.
  */
 
+import { Collapsible } from "@makeplane/propel/components/collapsible";
 import { useState } from "react";
 import useSWR from "swr";
-// plane imports
-import { ChevronRightIcon } from "@plane/propel/icons";
-import { Collapsible } from "@plane/ui";
-import { cn } from "@plane/utils";
 // services
 import { GithubCommitService } from "@/services/issue/github_commit.service";
 // local imports
@@ -37,17 +34,13 @@ export function GithubCommitsCollapsible(props: Props) {
   return (
     <div className="py-1 text-11">
       <Collapsible
-        isOpen={isOpen}
-        onToggle={() => setIsOpen((prev) => !prev)}
-        title={
-          <div className="flex w-full items-center justify-between gap-2 py-1.5">
-            <h4>
-              Commits <span className="text-tertiary">({commits.length})</span>
-            </h4>
-            <ChevronRightIcon className={cn("size-3 flex-shrink-0 transition-transform", { "rotate-90": isOpen })} />
-          </div>
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        trigger={
+          <h4>
+            Commits <span className="text-tertiary">({commits.length})</span>
+          </h4>
         }
-        buttonClassName="w-full"
       >
         <div className="flex flex-col gap-2">
           {commits.map((commit) => (

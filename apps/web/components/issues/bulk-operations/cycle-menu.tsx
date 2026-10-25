@@ -6,12 +6,12 @@
  * Fork-specific addition, absent from the upstream project this was forked from.
  */
 
+import { Spinner } from "@plane/blocks/spinner";
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import type { ICycle } from "@plane/types";
-import { Spinner } from "@plane/ui";
 // hooks
 import { useCycle } from "@/hooks/store/use-cycle";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
@@ -64,7 +64,7 @@ export const BulkOperationsCycleMenu = observer(function BulkOperationsCycleMenu
       await issues.addIssueToCycle(slug, singleProjectId, cycle.id, issuesByProject[singleProjectId]);
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "One or more work items could not be added to the cycle. Please try again.",
       });

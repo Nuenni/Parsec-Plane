@@ -16,7 +16,7 @@ import { useParams } from "next/navigation";
 import { Contrast, Tag, Trash2, UserPlus, UserRoundCheck, X } from "lucide-react";
 import { Command as CommandIcon } from "lucide-react";
 import { CalendarDays, Signal } from "lucide-react";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";
@@ -82,7 +82,7 @@ export const IssueBulkOperationsRoot = observer(function IssueBulkOperationsRoot
       );
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "One or more work items could not be assigned to you. Please try again.",
       });

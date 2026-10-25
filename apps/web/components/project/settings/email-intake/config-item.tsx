@@ -4,10 +4,11 @@
  * See the LICENSE file for details.
  */
 
+import { Switch } from "@makeplane/propel/components/switch";
+import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import type { TEmailIntakeConfig, TEmailIntakeConfigCreate } from "@plane/types";
-import { ToggleSwitch, Tooltip } from "@plane/ui";
 // local imports
 import { EmailIntakeConfigForm } from "./config-form";
 
@@ -31,8 +32,8 @@ export function EmailIntakeConfigItem(props: Props) {
         </button>
         <div className="flex items-center gap-3">
           <span className="text-11 text-tertiary">Active</span>
-          <ToggleSwitch value={config.is_active} onChange={(value) => onUpdate({ is_active: value })} />
-          <Tooltip tooltipContent="Remove this mailbox">
+          <Switch size="sm" checked={config.is_active} onCheckedChange={(value) => onUpdate({ is_active: value })} />
+          <Tooltip label="Remove this mailbox">
             <button
               type="button"
               onClick={onDelete}

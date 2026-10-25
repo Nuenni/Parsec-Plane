@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
+import { Loader } from "@plane/blocks/skeleton";
 import useSWR from "swr";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Loader } from "@plane/ui";
+import { setToast } from "@plane/blocks/toast";
 // services
 import { EmailIntakeConfigService } from "@/services/project/email-intake-config.service";
 // local imports
@@ -43,9 +43,9 @@ export function EmailIntakeSettingsRoot(props: Props) {
     try {
       await emailIntakeConfigService.create(workspaceSlug, projectId, data);
       mutate();
-      setToast({ type: TOAST_TYPE.SUCCESS, title: "Success", message: "Mailbox connected." });
+      setToast({ type: "success", title: "Success", message: "Mailbox connected." });
     } catch (error) {
-      setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: extractErrorMessage(error) });
+      setToast({ type: "error", title: "Error", message: extractErrorMessage(error) });
     }
   };
 
@@ -54,7 +54,7 @@ export function EmailIntakeSettingsRoot(props: Props) {
       await emailIntakeConfigService.update(workspaceSlug, projectId, configId, data);
       mutate();
     } catch (error) {
-      setToast({ type: TOAST_TYPE.ERROR, title: "Error", message: extractErrorMessage(error) });
+      setToast({ type: "error", title: "Error", message: extractErrorMessage(error) });
       throw error;
     }
   };

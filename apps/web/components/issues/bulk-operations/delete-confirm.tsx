@@ -6,11 +6,11 @@
  * Fork-specific addition, absent from the upstream project this was forked from.
  */
 
+import { Button } from "@makeplane/propel/components/button";
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Button } from "@plane/propel/button";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";
@@ -43,7 +43,7 @@ export const BulkOperationsDeleteConfirm = observer(function BulkOperationsDelet
       onDeleted();
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "One or more work items could not be deleted. Please try again.",
       });
@@ -59,12 +59,15 @@ export const BulkOperationsDeleteConfirm = observer(function BulkOperationsDelet
       </p>
       <p className="mt-1 text-13 text-tertiary">This cannot be undone.</p>
       <div className="mt-4 flex justify-end gap-2">
-        <Button variant="secondary" size="sm" onClick={onClose} disabled={isDeleting}>
-          Cancel
-        </Button>
-        <Button variant="error-fill" size="sm" onClick={handleDelete} loading={isDeleting}>
-          Delete {issueIds.length} work item{issueIds.length === 1 ? "" : "s"}
-        </Button>
+        <Button variant="secondary" size="sm" stretch="auto" label="Cancel" onClick={onClose} disabled={isDeleting} />
+        <Button
+          variant="danger"
+          size="sm"
+          stretch="auto"
+          label={`Delete ${issueIds.length} work item${issueIds.length === 1 ? "" : "s"}`}
+          onClick={handleDelete}
+          loading={isDeleting}
+        />
       </div>
     </div>
   );

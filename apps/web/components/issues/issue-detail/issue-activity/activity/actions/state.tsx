@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
+import { StateGroupIcon } from "@plane/blocks/icons";
 import { observer } from "mobx-react";
 // hooks
-import { StateGroupIcon } from "@plane/propel/icons";
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useProjectState } from "@/hooks/store/use-project-state";
 // components

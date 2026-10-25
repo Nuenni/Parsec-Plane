@@ -10,7 +10,6 @@ import useSWR, { mutate } from "swr";
 // i18n
 import { useTranslation } from "@plane/i18n";
 // ui
-import { Input } from "@plane/ui";
 // utils
 import { cn } from "@plane/utils";
 // services
@@ -67,8 +66,7 @@ export const RequesterEmailInput = observer(function RequesterEmailInput(props: 
   };
 
   return (
-    <Input
-      mode="transparent"
+    <input
       type="email"
       value={value}
       onChange={(e) => setValue(e.target.value)}
@@ -78,7 +76,9 @@ export const RequesterEmailInput = observer(function RequesterEmailInput(props: 
       }}
       placeholder={t("issue.add.requester_email")}
       disabled={disabled}
-      className={cn("w-full grow px-2 py-0.5 text-body-xs-regular")}
+      className={cn(
+        "placeholder-tertiary block w-full grow rounded-sm border-none bg-transparent px-2 py-0.5 text-body-xs-regular ring-0 transition-all focus:ring-1 focus:ring-accent-strong focus:outline-none"
+      )}
     />
   );
 });

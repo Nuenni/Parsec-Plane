@@ -6,10 +6,10 @@
  * Fork-specific addition, absent from the upstream project this was forked from.
  */
 
+import { Calendar } from "@makeplane/propel/components/calendar";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { Calendar } from "@plane/propel/calendar";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import type { EIssuesStoreType } from "@plane/types";
 import { renderFormattedPayloadDate } from "@plane/utils";
 // hooks
@@ -54,7 +54,7 @@ export const BulkOperationsDueDateMenu = observer(function BulkOperationsDueDate
       );
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "The due date could not be updated for one or more work items. Please try again.",
       });
@@ -63,14 +63,9 @@ export const BulkOperationsDueDateMenu = observer(function BulkOperationsDueDate
 
   return (
     <div className="p-2">
-      <Calendar
-        className="rounded-md border border-subtle p-3"
-        captionLayout="dropdown"
-        mode="single"
-        showOutsideDays
-        fixedWeeks
-        onSelect={handleSelect}
-      />
+      <div className="rounded-md border border-subtle p-3">
+        <Calendar mode="single" showOutsideDays fixedWeeks onSelect={handleSelect} />
+      </div>
     </div>
   );
 });

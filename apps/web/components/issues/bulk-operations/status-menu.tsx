@@ -6,15 +6,15 @@
  * Fork-specific addition, absent from the upstream project this was forked from.
  */
 
+import { StateGroupIcon } from "@plane/blocks/icons";
+import { Spinner } from "@plane/blocks/spinner";
 import { useMemo } from "react";
 import { Command } from "cmdk";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
-import { StateGroupIcon } from "@plane/propel/icons";
-import { setToast, TOAST_TYPE } from "@plane/propel/toast";
+import { setToast } from "@plane/blocks/toast";
 import { EIssueServiceType } from "@plane/types";
 import type { IState } from "@plane/types";
-import { Spinner } from "@plane/ui";
 // hooks
 import { useIssueDetail } from "@/hooks/store/use-issue-detail";
 import { useIssues } from "@/hooks/store/use-issues";
@@ -78,7 +78,7 @@ export const BulkOperationsStatusMenu = observer(function BulkOperationsStatusMe
       );
     } catch {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error!",
         message: "The status could not be updated for one or more work items. Please try again.",
       });

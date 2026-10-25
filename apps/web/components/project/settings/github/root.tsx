@@ -4,11 +4,13 @@
  * See the LICENSE file for details.
  */
 
+import { Button } from "@makeplane/propel/components/button";
+import { Input } from "@makeplane/propel/components/input";
+import { Loader } from "@plane/blocks/skeleton";
+import { Switch } from "@makeplane/propel/components/switch";
 import { useState } from "react";
 import useSWR from "swr";
-import { Button } from "@plane/propel/button";
-import { TOAST_TYPE, setToast } from "@plane/propel/toast";
-import { Input, Loader, ToggleSwitch } from "@plane/ui";
+import { setToast } from "@plane/blocks/toast";
 // services
 import { GithubProjectLinkService } from "@/services/project/github-link.service";
 // local imports
@@ -42,10 +44,10 @@ export function GithubProjectSettingsRoot(props: Props) {
       setRepositoryFullName("");
       setSyncIssues(false);
       mutate();
-      setToast({ type: TOAST_TYPE.SUCCESS, title: "Success", message: "Repository linked." });
+      setToast({ type: "success", title: "Success", message: "Repository linked." });
     } catch (error: any) {
       setToast({
-        type: TOAST_TYPE.ERROR,
+        type: "error",
         title: "Error",
         message: error?.error ?? "Could not link this repository.",
       });
@@ -79,19 +81,27 @@ export function GithubProjectSettingsRoot(props: Props) {
         <div className="flex flex-col gap-3 rounded-lg border border-subtle p-4">
           <h5 className="text-body-sm-medium">Link a GitHub repository</h5>
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            <Input
-              value={repositoryFullName}
-              onChange={(event) => setRepositoryFullName(event.target.value)}
-              placeholder="owner/repository"
-              className="w-full px-3 py-2 md:max-w-xs"
-            />
+            <div className="w-full md:max-w-xs">
+              <Input
+                size="md"
+                value={repositoryFullName}
+                onChange={(event) => setRepositoryFullName(event.target.value)}
+                placeholder="owner/repository"
+              />
+            </div>
             <div className="flex items-center gap-2 text-13">
-              <ToggleSwitch value={syncIssues} onChange={setSyncIssues} />
+              <Switch size="sm" checked={syncIssues} onCheckedChange={setSyncIssues} />
               Sync issues both ways
             </div>
-            <Button onClick={handleCreate} loading={isCreating} disabled={!repositoryFullName.trim()}>
-              Add repository
-            </Button>
+            <Button
+              variant="primary"
+              size="md"
+              stretch="auto"
+              label="Add repository"
+              onClick={handleCreate}
+              loading={isCreating}
+              disabled={!repositoryFullName.trim()}
+            />
           </div>
         </div>
       )}

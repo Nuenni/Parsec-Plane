@@ -4,9 +4,9 @@
  * See the LICENSE file for details.
  */
 
+import { Tooltip } from "@makeplane/propel/components/tooltip";
 import { CheckCircle2, CircleDot, GitMerge, GitPullRequestClosed, XCircle, Loader2, X } from "lucide-react";
 import type { TGithubPullRequestLink } from "@plane/types";
-import { Tooltip } from "@plane/ui";
 import { cn } from "@plane/utils";
 
 const STATE_META = {
@@ -69,7 +69,7 @@ export function GithubPullRequestChip(props: Props) {
           <span className="flex-shrink-0 text-11 text-tertiary">#{pullRequest.pr_number}</span>
         </a>
         {canUnlink && onUnlink && (
-          <Tooltip tooltipContent="Unlink pull request">
+          <Tooltip label="Unlink pull request">
             <button
               type="button"
               onClick={(event) => {
