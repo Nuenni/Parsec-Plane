@@ -14,8 +14,16 @@
 # Format: <file>\t<exact matched line, trimmed>
 apps/admin/app/(all)/(dashboard)/email/email-config-form.tsx	placeholder: "getitdone@projectplane.so",
 apps/admin/app/(all)/(dashboard)/email/email-config-form.tsx	placeholder: "no-reply@projectplane.so",
+apps/admin/components/common/plane-lockup.tsx	export function PlaneLockup({ width = "253", height = "53", className, color = "currentColor" }: PlaneLockupProps) {
+apps/admin/components/common/plane-lockup.tsx	type PlaneLockupProps = {
+apps/admin/components/common/skeleton.tsx	SkeletonItem.displayName = "plane-ui-skeleton-item";
+apps/admin/components/common/skeleton.tsx	SkeletonRoot.displayName = "plane-ui-skeleton";
+apps/admin/providers/core.tsx	</PlaneToastProvider>
+apps/admin/providers/core.tsx	<PlaneToastProvider>
+apps/api/plane/app/serializers/base.py	``/api/v1/`` mapper and to neither of these (makeplane/plane#4639).
 apps/api/plane/app/urls/analytic.py	name="plane-analytics",
 apps/api/plane/app/views/workspace/home.py	if key not in ["quick_tutorial", "new_at_plane"]
+apps/api/plane/authentication/session.py	"""Origins of Plane's own apps: the configured base URLs, CORS origins and CSRF trusted origins."""
 apps/api/plane/bgtasks/email_intake_task.py	"""Replaces Plane image blocks with cid-referenced <img> tags and returns the
 apps/api/plane/bgtasks/github_sync_task.py	Issue Fields. Priority maps directly to Plane's own priority field; Effort
 apps/api/plane/bgtasks/workspace_seed_task.py	email=f"bot_user_{workspace.id}@{urlparse(settings.WEB_URL or 'https://plane.so').hostname or 'plane.so'}",
@@ -35,6 +43,8 @@ apps/api/plane/license/migrations/0005_rename_product_instance_edition_and_more.
 apps/api/plane/license/models/instance.py	PLANE_COMMUNITY = "PLANE_COMMUNITY"
 apps/api/plane/license/models/instance.py	edition = models.CharField(max_length=255, default=InstanceEdition.PLANE_COMMUNITY.value)
 apps/api/plane/license/utils/instance_value.py	"default": os.environ.get("EMAIL_FROM", "Team Plane <team@mailer.plane.so>"),
+apps/api/plane/settings/common.py	"generates them on install and upgrade) and restart MinIO and Plane."
+apps/api/plane/settings/common.py	Cookies are Secure when Plane is served over https, or when every configured
 apps/api/plane/settings/production.py	else os.path.join(BASE_DIR, "logs", "plane-error.log")  # noqa
 apps/api/plane/settings/production.py	os.path.join(BASE_DIR, "logs", "plane-debug.log")  # noqa
 apps/api/plane/urls.py	"""plane URL Configuration"""
@@ -88,64 +98,98 @@ apps/live/tests/lib/pdf/pdf-rendering.test.ts	const portraitBuffer = await rende
 apps/live/tests/lib/pdf/pdf-rendering.test.ts	describe("renderPlaneDocToPdfBuffer", () => {
 apps/live/tests/lib/pdf/pdf-rendering.test.ts	import { renderPlaneDocToPdfBuffer } from "@/lib/pdf";
 apps/live/tsconfig.json	"@/plane-live/*": ["./src/ce/*"]
-apps/space/app/root.tsx	const APP_DESCRIPTION = "Parsec Publish is a customer feedback management tool built on top of plane.so";
 apps/space/lib/instance-provider.tsx	const patternBackground = resolvedTheme === "dark" ? PlaneBackgroundPatternDark : PlaneBackgroundPattern;
 apps/space/lib/instance-provider.tsx	import PlaneBackgroundPattern from "@/app/assets/auth/background-pattern.svg?url";
 apps/space/lib/instance-provider.tsx	import PlaneBackgroundPatternDark from "@/app/assets/auth/background-pattern-dark.svg?url";
-apps/web/core/components/auth-screens/header.tsx	text: "auth.common.new_to_plane",
-apps/web/core/components/global/version-number.tsx	export function PlaneVersionNumber() {
-apps/web/core/components/home/home-dashboard-widgets.tsx	new_at_plane: {
-apps/web/core/components/home/home-dashboard-widgets.tsx	title: "home.new_at_plane.title",
-apps/web/core/components/inbox/sidebar/inbox-list-item.tsx	<Avatar src={getFileURL("")} name={"Plane"} size="md" showTooltip />
-apps/web/core/components/inbox/sidebar/inbox-list-item.tsx	{createdByDetails && createdByDetails.email?.includes("intake@plane.so") ? (
-apps/web/core/components/navigation/tab-navigation-utils.ts	export const TAB_PREFS_KEY = "plane_tab_prefs";
-apps/web/core/components/power-k/config/help-commands.ts	i18n_title: "power_k.help_actions.open_plane_documentation",
-apps/web/core/components/power-k/config/help-commands.ts	id: "open_plane_documentation",
-apps/web/core/components/workspace/billing/comparison/base.tsx	const getSubscriptionType = (planKey: TPlanePlans) => planDetails[planKey].id;
-apps/web/core/components/workspace/billing/comparison/base.tsx	const { planDetails, planHighlights, planComparison } = PLANE_PLANS;
-apps/web/core/components/workspace/billing/comparison/base.tsx	const { planeDetails, isSelfManaged, isCompareAllFeaturesSectionOpen, setIsCompareAllFeaturesSectionOpen } = props;
-apps/web/core/components/workspace/billing/comparison/base.tsx	export const shouldRenderPlanDetail = (planKey: TPlanePlans) => {
-apps/web/core/components/workspace/billing/comparison/base.tsx	import type { TPlanePlans } from "@/components/workspace/billing/comparison/plans";
-apps/web/core/components/workspace/billing/comparison/base.tsx	import { ComingSoonBadge, PLANE_PLANS, PLANS_LIST } from "@/components/workspace/billing/comparison/plans";
-apps/web/core/components/workspace/billing/comparison/base.tsx	planeDetails: React.ReactNode;
-apps/web/core/components/workspace/billing/comparison/base.tsx	shouldRenderPlanDetail(planKey as TPlanePlans)
-apps/web/core/components/workspace/billing/comparison/base.tsx	shouldRenderPlanDetail(planKey as TPlanePlans) && (
-apps/web/core/components/workspace/billing/comparison/base.tsx	{planeDetails}
-apps/web/core/components/workspace/billing/comparison/plans.tsx	"Choose other domains that can authenticate into\nyour Plane workspace or restrict all but one domain.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	"Sync Plane work items and states to GitHub work items and\nstates. Update GitHub automatically with activity\nfrom Plane and vice-versa.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	"Track progress in cycles, modules, and overviews\nthroughout Plane without switching to dashboards\nor Analytics.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	"Write Plane Query Language in search with support\nfor Boolean operators. Soon, you can write natural\nlanguage queries.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	"self-hosted"?: Record<TPlanePlans, TPlanFeatureData>;
-apps/web/core/components/workspace/billing/comparison/plans.tsx	cloud: Record<TPlanePlans, TPlanFeatureData>;
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Access a keyboard-first gateway to almost anything\nin Plane.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Create Plane work items from Freshdesk tickets.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Create Plane work items from Zendesk tickets.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Get Plane activity in Slack and use / commands in\nSlack to make changes in Plane.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Get our official LDAP implementation and secure\nyour Plane workspace with your LDAP server.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Get the officially supported OIDC implementation\nand make Plane secure with any IdP.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Get the officially supported SAML implementation\nand make Plane secure with any IdP.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Install and deploy your self-hosted Plane to any\nprivate cloud with a single-line command.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Manage your self-hosted Plane instance better with\nan instance admin interface.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Respond to work items, @mention members, and brainstorm\ntogether without leaving Plane.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "Secure your Plane workspace with device-\ndependent two-factor authentication and passkeys. ",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	description: "See a full-workspace audit log and use APIs to flag\nPlane activity in compliance systems.",
-apps/web/core/components/workspace/billing/comparison/plans.tsx	export const PLANE_PLANS: PlanePlans = {
-apps/web/core/components/workspace/billing/comparison/plans.tsx	export const PLANS_LIST: TPlanePlans[] = ["free", "one", "pro", "business", "enterprise"];
-apps/web/core/components/workspace/billing/comparison/plans.tsx	export type TPlanePlans = "free" | "one" | "pro" | "business" | "enterprise";
-apps/web/core/components/workspace/billing/comparison/plans.tsx	planDetails: Record<TPlanePlans, TPlanDetail>;
-apps/web/core/components/workspace/billing/comparison/plans.tsx	planHighlights: Record<TPlanePlans, string[]>;
-apps/web/core/components/workspace/billing/comparison/plans.tsx	type PlanePlans = {
-apps/web/core/components/workspace/billing/comparison/root.tsx	const currentPlanKey = planKey as TPlanePlans;
-apps/web/core/components/workspace/billing/comparison/root.tsx	const { planDetails } = PLANE_PLANS;
-apps/web/core/components/workspace/billing/comparison/root.tsx	import type { TPlanePlans } from "@/components/workspace/billing/comparison/plans";
-apps/web/core/components/workspace/billing/comparison/root.tsx	import { PLANE_PLANS } from "@/components/workspace/billing/comparison/plans";
-apps/web/core/components/workspace/billing/comparison/root.tsx	planeDetails={Object.entries(planDetails).map(([planKey, plan]) => {
-apps/web/core/components/workspace/sidebar/help-section/root.tsx	<PlaneVersionNumber />
-apps/web/core/components/workspace/sidebar/help-section/root.tsx	import { PlaneVersionNumber } from "@/components/global/version-number";
-apps/web/core/lib/stale-asset-error.ts	const STALE_ASSET_RELOAD_KEY = "__plane_chunk_reload";
-apps/web/core/store/user/base-permissions.store.ts	type ETempUserRole = TUserPermissions | EUserWorkspaceRoles | EUserProjectRoles; // TODO: Remove this once we have migrated user permissions to enums to plane constants package
-apps/web/public/site.webmanifest.json	{ "src": "/plane-logos/plane-mobile-pwa.png", "sizes": "192x192", "type": "image/png" },
-apps/web/public/site.webmanifest.json	{ "src": "/plane-logos/plane-mobile-pwa.png", "sizes": "512x512", "type": "image/png" }
+apps/space/lib/toast-provider.tsx	return <PlaneToastProvider>{children}</PlaneToastProvider>;
+apps/web/app/provider.tsx	</PlaneToastProvider>
+apps/web/app/provider.tsx	<PlaneToastProvider>
+apps/web/components/auth-screens/header.tsx	text: "auth.common.new_to_plane",
+apps/web/components/global/version-number.tsx	export function PlaneVersionNumber() {
+apps/web/components/home/home-dashboard-widgets.tsx	new_at_plane: {
+apps/web/components/home/home-dashboard-widgets.tsx	title: "home.new_at_plane.title",
+apps/web/components/inbox/sidebar/inbox-list-item.tsx	<Avatar alt="Plane" fallback="P" size="xs" />
+apps/web/components/inbox/sidebar/inbox-list-item.tsx	{createdByDetails && createdByDetails.email?.includes("intake@plane.so") ? (
+apps/web/components/navigation/tab-navigation-utils.ts	export const TAB_PREFS_KEY = "plane_tab_prefs";
+apps/web/components/power-k/config/help-commands.ts	i18n_title: "power_k.help_actions.open_plane_documentation",
+apps/web/components/power-k/config/help-commands.ts	id: "open_plane_documentation",
+apps/web/components/workspace/billing/comparison/base.tsx	const getSubscriptionType = (planKey: TPlanePlans) => planDetails[planKey].id;
+apps/web/components/workspace/billing/comparison/base.tsx	const { planDetails, planHighlights, planComparison } = PLANE_PLANS;
+apps/web/components/workspace/billing/comparison/base.tsx	const { planeDetails, isSelfManaged, isCompareAllFeaturesSectionOpen, setIsCompareAllFeaturesSectionOpen } = props;
+apps/web/components/workspace/billing/comparison/base.tsx	export const shouldRenderPlanDetail = (planKey: TPlanePlans) => {
+apps/web/components/workspace/billing/comparison/base.tsx	import type { TPlanePlans } from "@/components/workspace/billing/comparison/plans";
+apps/web/components/workspace/billing/comparison/base.tsx	import { ComingSoonBadge, PLANE_PLANS, PLANS_LIST } from "@/components/workspace/billing/comparison/plans";
+apps/web/components/workspace/billing/comparison/base.tsx	planeDetails: React.ReactNode;
+apps/web/components/workspace/billing/comparison/base.tsx	shouldRenderPlanDetail(planKey as TPlanePlans)
+apps/web/components/workspace/billing/comparison/base.tsx	shouldRenderPlanDetail(planKey as TPlanePlans) && (
+apps/web/components/workspace/billing/comparison/base.tsx	{planeDetails}
+apps/web/components/workspace/billing/comparison/plans.tsx	"Choose other domains that can authenticate into\nyour Plane workspace or restrict all but one domain.",
+apps/web/components/workspace/billing/comparison/plans.tsx	"Sync Plane work items and states to GitHub work items and\nstates. Update GitHub automatically with activity\nfrom Plane and vice-versa.",
+apps/web/components/workspace/billing/comparison/plans.tsx	"Track progress in cycles, modules, and overviews\nthroughout Plane without switching to dashboards\nor Analytics.",
+apps/web/components/workspace/billing/comparison/plans.tsx	"Write Plane Query Language in search with support\nfor Boolean operators. Soon, you can write natural\nlanguage queries.",
+apps/web/components/workspace/billing/comparison/plans.tsx	"self-hosted"?: Record<TPlanePlans, TPlanFeatureData>;
+apps/web/components/workspace/billing/comparison/plans.tsx	cloud: Record<TPlanePlans, TPlanFeatureData>;
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Access a keyboard-first gateway to almost anything\nin Plane.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Create Plane work items from Freshdesk tickets.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Create Plane work items from Zendesk tickets.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Get Plane activity in Slack and use / commands in\nSlack to make changes in Plane.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Get our official LDAP implementation and secure\nyour Plane workspace with your LDAP server.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Get the officially supported OIDC implementation\nand make Plane secure with any IdP.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Get the officially supported SAML implementation\nand make Plane secure with any IdP.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Install and deploy your self-hosted Plane to any\nprivate cloud with a single-line command.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Manage your self-hosted Plane instance better with\nan instance admin interface.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Respond to work items, @mention members, and brainstorm\ntogether without leaving Plane.",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "Secure your Plane workspace with device-\ndependent two-factor authentication and passkeys. ",
+apps/web/components/workspace/billing/comparison/plans.tsx	description: "See a full-workspace audit log and use APIs to flag\nPlane activity in compliance systems.",
+apps/web/components/workspace/billing/comparison/plans.tsx	export const PLANE_PLANS: PlanePlans = {
+apps/web/components/workspace/billing/comparison/plans.tsx	export const PLANS_LIST: TPlanePlans[] = ["free", "one", "pro", "business", "enterprise"];
+apps/web/components/workspace/billing/comparison/plans.tsx	export type TPlanePlans = "free" | "one" | "pro" | "business" | "enterprise";
+apps/web/components/workspace/billing/comparison/plans.tsx	planDetails: Record<TPlanePlans, TPlanDetail>;
+apps/web/components/workspace/billing/comparison/plans.tsx	planHighlights: Record<TPlanePlans, string[]>;
+apps/web/components/workspace/billing/comparison/plans.tsx	type PlanePlans = {
+apps/web/components/workspace/billing/comparison/root.tsx	const currentPlanKey = planKey as TPlanePlans;
+apps/web/components/workspace/billing/comparison/root.tsx	const { planDetails } = PLANE_PLANS;
+apps/web/components/workspace/billing/comparison/root.tsx	import type { TPlanePlans } from "@/components/workspace/billing/comparison/plans";
+apps/web/components/workspace/billing/comparison/root.tsx	import { PLANE_PLANS } from "@/components/workspace/billing/comparison/plans";
+apps/web/components/workspace/billing/comparison/root.tsx	planeDetails={Object.entries(planDetails).map(([planKey, plan]) => {
+apps/web/components/workspace/sidebar/help-section/root.tsx	<PlaneVersionNumber />
+apps/web/components/workspace/sidebar/help-section/root.tsx	import { PlaneVersionNumber } from "@/components/global/version-number";
+apps/web/lib/stale-asset-error.ts	const STALE_ASSET_RELOAD_KEY = "__plane_chunk_reload";
+apps/web/store/user/base-permissions.store.ts	type ETempUserRole = TUserPermissions | EUserWorkspaceRoles | EUserProjectRoles; // TODO: Remove this once we have migrated user permissions to enums to plane constants package
+packages/blocks/src/auth/oauth/oauth-button.tsx	OAuthButton.displayName = "plane-ui-oauth-button";
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	await user.click(await popup().findByRole("option", { name: "Plane" }));
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	await user.click(within(trigger).getByText("Plane"));
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	const chevron = (name = `${PLACEHOLDER}, Plane`) =>
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	const link = screen.getByRole("link", { name: "Plane" });
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	const navigation = (name = "Plane") => screen.getByRole("button", { name });
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	expect(link.getAttribute("href")).toBe("/plane");
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	expect(navigation("Plane (staging)")).toBeDefined();
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	expect(screen.queryByRole("button", { name: "Plane" })).toBeNull();
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	expect(screen.queryByRole("button", { name: "Project, Plane" })).toBeNull();
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	expect(trigger.textContent).toBe("Plane");
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	navigationItems: makeItems([{ onClick: undefined, href: "/plane" }]),
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	renderCrumb({ label: "Plane (staging)" });
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	selectedItemKey="plane"
+packages/blocks/src/breadcrumb/breadcrumb-navigation-select.test.tsx	{ key: "plane", label: "Plane", onClick: vi.fn() },
+packages/blocks/src/breadcrumb/breadcrumbs.test.tsx	<Breadcrumbs.Item component={plainCrumb("Plane")} />
+packages/blocks/src/breadcrumb/breadcrumbs.test.tsx	expect(rows.map((row) => row.textContent)).toEqual(["Plane", "Web app"]);
+packages/blocks/src/breadcrumb/breadcrumbs.test.tsx	expect(rows.map((row) => row.textContent)).toEqual(["Plane"]);
+packages/blocks/src/breadcrumb/breadcrumbs.test.tsx	expect(within(menu).getByRole("menuitem").textContent).toBe("Plane");
+packages/blocks/src/icons/brand/plane-lockup.tsx	export function PlaneLockup({ width = "253", height = "53", className, color = "currentColor" }: PlaneLockupProps) {
+packages/blocks/src/icons/brand/plane-lockup.tsx	export type PlaneLockupProps = React.ComponentPropsWithoutRef<"svg">;
+packages/blocks/src/icons/brand/plane-logo.tsx	export function PlaneLogo({ width = "85", height = "52", className, color = "currentColor" }: PlaneLogoProps) {
+packages/blocks/src/icons/brand/plane-logo.tsx	export type PlaneLogoProps = React.ComponentPropsWithoutRef<"svg">;
+packages/blocks/src/icons/index.ts	export { PlaneLockup } from "./brand/plane-lockup";
+packages/blocks/src/icons/index.ts	export { PlaneLogo } from "./brand/plane-logo";
+packages/blocks/src/layout/content-wrapper/content-wrapper.tsx	ContentWrapper.displayName = "plane-ui-wrapper";
+packages/blocks/src/layout/header/header.tsx	Header.displayName = "plane-ui-header";
+packages/blocks/src/layout/row/row.tsx	Row.displayName = "plane-ui-row";
+packages/blocks/src/skeleton/loader.tsx	Loader.displayName = "plane-ui-loader";
+packages/blocks/src/toast/index.ts	export type { PlaneToastProviderProps } from "./plane-toast-provider";
+packages/blocks/src/toast/index.ts	export { PlaneToastProvider } from "./plane-toast-provider";
+packages/blocks/src/toast/plane-toast-provider.tsx	PlaneToastProvider.displayName = "blocks.PlaneToastProvider";
+packages/blocks/src/toast/plane-toast-provider.tsx	export function PlaneToastProvider({ children }: PlaneToastProviderProps) {
+packages/blocks/src/toast/plane-toast-provider.tsx	export type PlaneToastProviderProps = {
 packages/constants/src/metadata.ts	export const SITE_NAME = "Plane | Simple, extensible, open-source project management tool.";
 packages/constants/src/metadata.ts	export const SITE_TITLE = "Plane | Simple, extensible, open-source project management tool.";
 packages/constants/src/metadata.ts	export const SPACE_SITE_DESCRIPTION = "Plane Publish is a customer feedback management tool built on top of plane.so";
@@ -159,40 +203,12 @@ packages/constants/src/payment.ts	[EProductSubscriptionEnum.ENTERPRISE]: "https:
 packages/constants/src/payment.ts	[EProductSubscriptionEnum.PRO]: "https://plane.so/pro",
 packages/constants/src/payment.ts	export const PLANE_COMMUNITY_PRODUCTS: Record<string, IPaymentProduct> = {
 packages/constants/src/payment.ts	export const TALK_TO_SALES_URL = "https://plane.so/talk-to-sales";
-packages/constants/src/payment.ts	month: "https://app.plane.so/upgrade/business/self-hosted?plan=month",
-packages/constants/src/payment.ts	month: "https://app.plane.so/upgrade/pro/self-hosted?plan=month",
 packages/constants/src/payment.ts	name: "Plane Business",
 packages/constants/src/payment.ts	name: "Plane Enterprise",
 packages/constants/src/payment.ts	name: "Plane Pro",
-packages/constants/src/payment.ts	year: "https://app.plane.so/upgrade/business/self-hosted?plan=year",
-packages/constants/src/payment.ts	year: "https://app.plane.so/upgrade/pro/self-hosted?plan=year",
 packages/constants/src/workspace.ts	"plane-enterprise",
 packages/constants/src/workspace.ts	"plane-pro",
 packages/constants/src/workspace.ts	"plane-ultimate",
-packages/editor/src/ce/constants/utility.ts	import type { ExtensionFileSetStorageKey } from "@/plane-editor/types/storage";
-packages/editor/src/core/components/editors/document/editor.tsx	import { DocumentEditorAdditionalExtensions } from "@/plane-editor/extensions";
-packages/editor/src/core/components/editors/editor-container.tsx	import { LinkContainer } from "@/plane-editor/components/link-container";
-packages/editor/src/core/components/editors/rich-text/editor.tsx	import { RichTextEditorAdditionalExtensions } from "@/plane-editor/extensions/rich-text-extensions";
-packages/editor/src/core/extensions/core-without-props.ts	import { CoreEditorAdditionalExtensionsWithoutProps } from "@/plane-editor/extensions/core/without-props";
-packages/editor/src/core/extensions/extensions.ts	import { CoreEditorAdditionalExtensions } from "@/plane-editor/extensions";
-packages/editor/src/core/extensions/slash-commands/command-items-list.tsx	import { coreEditorAdditionalSlashCommandOptions } from "@/plane-editor/extensions";
-packages/editor/src/core/extensions/unique-id/extension.ts	import { ADDITIONAL_BLOCK_NODE_TYPES } from "@/plane-editor/constants/extensions";
-packages/editor/src/core/extensions/utility.ts	import type { TAdditionalActiveDropbarExtensions } from "@/plane-editor/types/utils";
-packages/editor/src/core/helpers/assets.ts	import { ADDITIONAL_ASSETS_META_DATA_RECORD } from "@/plane-editor/constants/assets";
-packages/editor/src/core/helpers/editor-ref.ts	event.clipboardData?.setData("text/plane-editor-html", html);
-packages/editor/src/core/helpers/parser.ts	} from "@/plane-editor/helpers/parser";
-packages/editor/src/core/helpers/paste-asset.ts	import { assetDuplicationHandlers } from "@/plane-editor/helpers/asset-duplication";
-packages/editor/src/core/hooks/use-collaborative-editor.ts	import { DocumentEditorAdditionalExtensions } from "@/plane-editor/extensions";
-packages/editor/src/core/plugins/file/delete.ts	import { NODE_FILE_MAP } from "@/plane-editor/constants/utility";
-packages/editor/src/core/plugins/file/restore.ts	import { NODE_FILE_MAP } from "@/plane-editor/constants/utility";
-packages/editor/src/core/plugins/markdown-clipboard.ts	event.clipboardData?.setData("text/plane-editor-html", clipboardHTML);
-packages/editor/src/core/props.ts	const htmlContent = event.clipboardData.getData("text/plane-editor-html");
-packages/editor/src/core/types/asset.ts	import type { TAdditionalEditorAsset } from "@/plane-editor/types/asset";
-packages/editor/src/core/types/config.ts	import type { TExtendedFileHandler } from "@/plane-editor/types/config";
-packages/editor/src/core/types/editor.ts	} from "@/plane-editor/types/editor-extended";
-packages/editor/src/core/types/index.ts	export * from "@/plane-editor/types";
-packages/editor/src/index.ts	export { ADDITIONAL_EXTENSIONS } from "@/plane-editor/constants/extensions";
-packages/editor/tsconfig.json	"@/plane-editor/*": ["./src/ce/*"],
 packages/i18n/src/locales/en/auth.json	"description": "We will generate this bit of the metadata that identifies this Plane app as an authorized service on your IdP."
 packages/i18n/src/locales/en/auth.json	"description": "We will generate this for this Plane app. Add this as a trusted origin on your IdP's corresponding field."
 packages/i18n/src/locales/en/auth.json	"new_to_plane": "New to Parsec?",
@@ -311,39 +327,9 @@ packages/i18n/src/types/keys.generated.ts	| "sso.providers.saml.setup_modal.mapp
 packages/i18n/src/types/keys.generated.ts	| "workspace_settings.settings.plane-intelligence.description"
 packages/i18n/src/types/keys.generated.ts	| "workspace_settings.settings.plane-intelligence.heading"
 packages/i18n/src/types/keys.generated.ts	| "workspace_settings.settings.plane-intelligence.title"
-packages/propel/src/accordion/accordion.stories.tsx	<Accordion.Trigger>What is Plane?</Accordion.Trigger>
-packages/propel/src/accordion/accordion.stories.tsx	Plane is an open-source project management tool designed for developers and teams to plan, track, and manage
-packages/propel/src/accordion/accordion.stories.tsx	Plane offers both free and paid plans. The free plan includes essential features for small teams, while paid
-packages/propel/src/badge/badge.tsx	Badge.displayName = "plane-ui-badge";
-packages/propel/src/button/button.tsx	Button.displayName = "plane-ui-button";
-packages/propel/src/card/card.tsx	Card.displayName = "plane-ui-card";
-packages/propel/src/design-system/design-system-philosophy.stories.tsx	<h4 className="mb-2 font-semibold text-primary">❌ Mistake 1: Nested Surfaces (Same Plane)</h4>
-packages/propel/src/design-system/design-system-philosophy.stories.tsx	Modals exist on a <strong>different plane</strong>, so they can use surfaces even when there&apos;s a surface
-packages/propel/src/design-system/design-system-philosophy.stories.tsx	they&apos;re on different planes.
-packages/propel/src/icon-button/icon-button.tsx	IconButton.displayName = "plane-ui-icon-button";
-packages/propel/src/icons/brand/index.ts	export * from "./plane-lockup";
-packages/propel/src/icons/brand/index.ts	export * from "./plane-logo";
-packages/propel/src/icons/brand/index.ts	export * from "./plane-wordmark";
-packages/propel/src/icons/brand/plane-lockup.tsx	export function PlaneLockup({ width = "253", height = "53", className, color = "currentColor" }: ISvgIcons) {
-packages/propel/src/icons/brand/plane-logo.tsx	export function PlaneLogo({ width = "85", height = "52", className, color = "currentColor" }: ISvgIcons) {
-packages/propel/src/icons/brand/plane-wordmark.tsx	export function PlaneWordmark({ width = "146", height = "44", className, color = "currentColor" }: ISvgIcons) {
-packages/propel/src/icons/constants.tsx	{ icon: <Icon name="sub-brand.plane" />, title: "PlaneIcon" },
-packages/propel/src/icons/registry.ts	"sub-brand.plane": PlaneNewIcon,
-packages/propel/src/icons/registry.ts	import { PiChatLogo, PlaneNewIcon, WikiIcon } from "./sub-brand";
-packages/propel/src/icons/sub-brand/index.ts	export * from "./plane-icon";
-packages/propel/src/icons/sub-brand/plane-icon.tsx	export function PlaneNewIcon({ color = "currentColor", ...rest }: ISvgIcons) {
-packages/propel/src/skeleton/root.tsx	SkeletonItem.displayName = "plane-ui-skeleton-item";
-packages/propel/src/skeleton/root.tsx	SkeletonRoot.displayName = "plane-ui-skeleton";
-packages/propel/src/switch/root.tsx	Switch.displayName = "plane-ui-switch";
-packages/propel/src/toast/toast.stories.tsx	The toast component uses semantic design tokens from the Plane design system.
+packages/services/src/helpers/url.test.ts	"https://api.plane.so/api/foo/"
+packages/services/src/helpers/url.test.ts	expect(normalizeAPIRequestURL("/api/assets/v2/workspaces/acme", "https://api.plane.so")).toBe(
+packages/services/src/helpers/url.test.ts	expect(normalizeAPIRequestURL("/api/assets/v2/workspaces/acme/", "https://api.plane.so")).toBe(
+packages/services/src/helpers/url.test.ts	expect(normalizeAPIRequestURL("https://api.plane.so/api/foo", "https://api.plane.so")).toBe(
+packages/services/src/helpers/url.test.ts	expect(normalizeAPIRequestURL(signedUrl, "https://api.plane.so")).toBe(signedUrl);
 packages/types/src/home.ts	export type THomeWidgetKeys = "quick_links" | "recents" | "my_stickies" | "quick_tutorial" | "new_at_plane";
-packages/ui/src/badge/badge.tsx	Badge.displayName = "plane-ui-badge";
-packages/ui/src/button/button.tsx	Button.displayName = "plane-ui-button";
-packages/ui/src/button/toggle-switch.tsx	ToggleSwitch.displayName = "plane-ui-toggle-switch";
-packages/ui/src/card/card.tsx	Card.displayName = "plane-ui-card";
-packages/ui/src/content-wrapper/content-wrapper.tsx	ContentWrapper.displayName = "plane-ui-wrapper";
-packages/ui/src/header/header.tsx	Header.displayName = "plane-ui-header";
-packages/ui/src/loader.tsx	Loader.displayName = "plane-ui-loader";
-packages/ui/src/oauth/oauth-button.tsx	OAuthButton.displayName = "plane-ui-oauth-button";
-packages/ui/src/row/row.tsx	Row.displayName = "plane-ui-row";
-packages/ui/src/tag/tag.tsx	Tag.displayName = "plane-ui-container";

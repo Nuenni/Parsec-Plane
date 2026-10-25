@@ -137,7 +137,7 @@ export const GeneralConfigurationForm = observer(function GeneralConfigurationFo
               name="is_telemetry_enabled"
               render={({ field: { value, onChange } }) => (
                 <Switch
-                  aria-label="Let Plane collect anonymous usage data"
+                  aria-label="Let Parsec collect anonymous usage data"
                   checked={value ?? false}
                   onCheckedChange={onChange}
                   size="sm"
