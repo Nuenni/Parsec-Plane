@@ -12,6 +12,8 @@
 
 # --- Our own package/import namespace, not Plane Software, Inc. ---
 line:@plane/                                                       # our own pnpm workspace package scope (@plane/ui, @plane/constants, ...), not the company
+line:@makeplane/propel                                             # upstream's design-system npm package (since the Oct 2026 merge it replaces packages/ui + packages/propel); a dependency name like @plane/, not a link or brand text
+line:text/plane-editor-html                                        # internal clipboard MIME type the editor writes and reads for its own copy/paste; never shown, never leaves the browser
 line:from\s+plane\.|import\s+plane\.|\bplane\.(analytics|api|app|authentication|bgtasks|db|license|logs|middleware|seeds|settings|space|static|tests|throttles|utils|web|celery|urls|wsgi|asgi)\b|name\s*=\s*"plane\.|getLogger\("plane"\)   # the Django backend's own top-level Python package is literally named "plane", with these exact subpackages/modules (apps/api/plane/*) - renaming it is a rejected refactor (see audit), not a branding leftover. Deliberately an enumerated allow-list, not a wildcard like plane\.[a-z_]+, since that would also swallow real hits like "plane.so" or "plane.town"
 line:logging\.getLogger\("plane\.[a-z_]+"\)|"plane\.[a-z_]+":\s*\{     # Python logging namespace/config ("plane.worker", "plane.migrations", ...) - internal log-category names, scoped narrowly to logger syntax so it can't also swallow a real plane.so URL
 line:"plane"\s*:\s*\{|@plane/typescript-config|turbo\.json          # workspace/build-tooling package references

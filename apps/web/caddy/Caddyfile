@@ -1,0 +1,41 @@
+{
+	servers {
+		trusted_proxies static private_ranges
+	}
+
+	order rate_limit before file_server
+}
+
+:3000 {
+	root * /usr/share/caddy/html
+
+	# Per-client-IP rate limiting for static asset requests
+	# Parsec: 3000 instead of upstream's 300. A single cold load of the web app
+	# fetches ~315 hashed chunks (measured 25.10.2026), so 300 answered the tail of
+	# the first page load with 429 and the route loader kept reloading the page.
+	# Every deploy changes the chunk names, so every user starts cold.
+	rate_limit {
+		zone static {
+			key {client_ip}
+			events 3000
+			window 1m
+		}
+	}
+
+	# Security headers (HSTS is set at the TLS terminator)
+	header {
+		X-Frame-Options "DENY"
+		X-Content-Type-Options "nosniff"
+		X-XSS-Protection "1; mode=block"
+	}
+
+	# SPA fallback
+	try_files {path} /index.html
+	file_server
+
+	# Access logs to stdout (default in Caddy)
+	log {
+		output stdout
+		format console
+	}
+}

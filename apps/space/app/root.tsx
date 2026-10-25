@@ -73,12 +73,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const meta: Route.MetaFunction = ({ data, location }) => [
+export const meta: Route.MetaFunction = ({ loaderData, location }) => [
   { title: APP_TITLE },
   { name: "description", content: APP_DESCRIPTION },
   { property: "og:title", content: APP_TITLE },
   { property: "og:description", content: APP_DESCRIPTION },
-  ...(data?.origin ? [{ property: "og:url", content: `${data.origin}${location.pathname}` }] : []),
+  ...(loaderData?.origin ? [{ property: "og:url", content: `${loaderData.origin}${location.pathname}` }] : []),
   {
     name: "keywords",
     content:

@@ -7,8 +7,7 @@
 import { observer } from "mobx-react";
 import { useTheme } from "next-themes";
 // plane imports
-import { PROJECT_TRACKER_ELEMENTS } from "@plane/constants";
-import { Button } from "@plane/propel/button";
+import { Button } from "@makeplane/propel/components/button";
 // assets
 import ProjectDarkEmptyState from "@/app/assets/empty-state/project-settings/no-projects-dark.png?url";
 import ProjectLightEmptyState from "@/app/assets/empty-state/project-settings/no-projects-light.png?url";
@@ -31,11 +30,12 @@ function ProjectSettingsPage() {
       </div>
       <div className="flex gap-2">
         <Button
+          variant="primary"
+          size="sm"
+          stretch="auto"
+          label="Start your first project"
           onClick={() => toggleCreateProjectModal(true)}
-          data-ph-element={PROJECT_TRACKER_ELEMENTS.EMPTY_STATE_CREATE_PROJECT_BUTTON}
-        >
-          Start your first project
-        </Button>
+        />
       </div>
     </div>
   );
